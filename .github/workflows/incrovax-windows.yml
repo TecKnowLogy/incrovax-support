@@ -216,6 +216,9 @@ jobs:
       with:
         name: rustdesk-unsigned-windows-${{ matrix.job.arch }}
         path: rustdesk
+    - name: Name installed client executable
+      shell: pwsh
+      run: Move-Item ./rustdesk/rustdesk.exe ./rustdesk/INCrovax-Support.exe
     - name: Build self-extracted executable
       shell: bash
       if: env.UPLOAD_ARTIFACT == 'true'
@@ -225,7 +228,7 @@ jobs:
 
         pip3 install -r requirements.txt
 
-        python3 ./generate.py -f ../../rustdesk/ -o . -e ../../rustdesk/rustdesk.exe
+        python3 ./generate.py -f ../../rustdesk/ -o . -e ../../rustdesk/INCrovax-Support.exe
 
         popd
 
@@ -246,6 +249,24 @@ jobs:
         if (-not $exe) { throw "Portable EXE missing" }
 
         Copy-Item $exe.FullName ./SignOutput/INCrovax-Support.exe'
+    - name: Test first-launch installation and automatic service
+      shell: pwsh
+      timeout-minutes: 4
+      run: "$ErrorActionPreference = 'Stop'\n$exe = Join-Path $env:ProgramFiles 'INCrovax-Support/INCrovax-Support.exe'\n\
+        Start-Process ./SignOutput/INCrovax-Support.exe\n$deadline = (Get-Date).AddSeconds(90)\n\
+        do {\n  Start-Sleep -Seconds 2\n  $svc = Get-Service -Name 'INCrovax-Support'\
+        \ -ErrorAction SilentlyContinue\n} until (((Test-Path $exe) -and $svc.Status\
+        \ -eq 'Running') -or (Get-Date) -gt $deadline)\nif (-not (Test-Path $exe))\
+        \ { throw 'First launch did not install the client' }\n$svc = Get-CimInstance\
+        \ Win32_Service -Filter \"Name='INCrovax-Support'\"\nif ($svc.State -ne 'Running'\
+        \ -or $svc.StartMode -ne 'Auto') { throw 'Automatic service missing or stopped'\
+        \ }\nWrite-Host \"Installation verified: $exe; service running, start mode\
+        \ Auto\"\n& $exe --option approve-mode password | Out-String\nStart-Sleep\
+        \ -Seconds 3\nRestart-Service -Name 'INCrovax-Support'\nStart-Sleep -Seconds\
+        \ 5\n$mode = & $exe --option approve-mode | Out-String\nif ($mode.Trim() -ne\
+        \ 'password') { throw \"Approval selection did not persist: $mode\" }\nWrite-Host\
+        \ 'Password approval mode persists across service restart; no access password\
+        \ was embedded.'\n"
     - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
       with:
         name: INCrovax-Support-Windows-x64-unsigned
