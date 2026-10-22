@@ -1,182 +1,88 @@
-<p align="center">
-  <img src="res/logo-header.svg" alt="RustDesk - Your remote desktop"><br>
-  <a href="#raw-steps-to-build">Build</a> •
-  <a href="#how-to-build-with-docker">Docker</a> •
-  <a href="#file-structure">Structure</a> •
-  <a href="#screenshots">Screenshots</a><br>
-  [<a href="docs/README-UA.md">Українська</a>] | [<a href="docs/README-CS.md">česky</a>] | [<a href="docs/README-ZH.md">中文</a>] | [<a href="docs/README-HU.md">Magyar</a>] | [<a href="docs/README-ES.md">Español</a>] | [<a href="docs/README-FA.md">فارسی</a>] | [<a href="docs/README-FR.md">Français</a>] | [<a href="docs/README-DE.md">Deutsch</a>] | [<a href="docs/README-PL.md">Polski</a>] | [<a href="docs/README-ID.md">Indonesian</a>] | [<a href="docs/README-FI.md">Suomi</a>] | [<a href="docs/README-ML.md">മലയാളം</a>] | [<a href="docs/README-JP.md">日本語</a>] | [<a href="docs/README-NL.md">Nederlands</a>] | [<a href="docs/README-IT.md">Italiano</a>] | [<a href="docs/README-RU.md">Русский</a>] | [<a href="docs/README-PTBR.md">Português (Brasil)</a>] | [<a href="docs/README-EO.md">Esperanto</a>] | [<a href="docs/README-KR.md">한국어</a>] | [<a href="docs/README-AR.md">العربي</a>] | [<a href="docs/README-VN.md">Tiếng Việt</a>] | [<a href="docs/README-DA.md">Dansk</a>] | [<a href="docs/README-GR.md">Ελληνικά</a>] | [<a href="docs/README-TR.md">Türkçe</a>] | [<a href="docs/README-NO.md">Norsk</a>] | [<a href="docs/README-RO.md">Română</a>]<br>
-  <b>We need your help to translate this README, <a href="https://github.com/rustdesk/rustdesk/tree/master/src/lang">RustDesk UI</a> and <a href="https://github.com/rustdesk/doc.rustdesk.com">RustDesk Doc</a> to your native language</b>
-</p>
+# INCrovax Control 0.1 — Entwicklungsfassung
 
-> [!Caution]
-> **Misuse Disclaimer:** <br>
-> The developers of RustDesk do not condone or support any unethical or illegal use of this software. Misuse, such as unauthorized access, control or invasion of privacy, is strictly against our guidelines. The authors are not responsible for any misuse of the application.
+Eigener Server, eigene Technikerkonsole und eigenes Windows-QuickSupport-Programm.
+Dieser Quellstand verwendet keinen RustDesk-Code und kein RustDesk-Protokoll.
+Er liegt vorerst in einem getrennten Branch des vorhandenen Forks. Dessen ältere
+Historie stammt weiterhin von RustDesk; die neue Entwicklung befindet sich in
+diesem Branch. Für eine spätere Veröffentlichung ein eigenes Repository verwenden.
 
+## Bereits implementiert
 
-Chat with us: [Discord](https://discord.gg/nDceKgxnkV) | [Twitter](https://twitter.com/rustdesk) | [Reddit](https://www.reddit.com/r/rustdesk) | [YouTube](https://www.youtube.com/@rustdesk)
+- Ein Technikerzugang mit eigenem Passwort; keine Standardzugangsdaten.
+- Kunden anlegen und Geräte per einmaligem Code einem Kunden zuordnen.
+- Geräteübersicht, Online-Status und Sperren eines Gerätezugangs.
+- Windows-Programm mit sichtbarer Zustimmung bei jeder Sitzung und lokaler Stopptaste.
+- Hauptmonitor als JPEG-Bildfolge (etwa ein Bild pro Sekunde, maximal 1440 Pixel breit).
+- Einfache Maussteuerung und Tasten (ASCII-Buchstaben, Ziffern, Navigation, Modifikatoren).
+- Zugriffssperre vor Freigabe sowie nach Ablehnung, Sitzungsende oder Verbindungsverlust.
+- Sicherheitsrelevante Ereignisse im Serverprotokoll; keine Bildschirmaufzeichnung.
+- Registrierungsschlüssel serverseitig nur gehasht; im QuickSupport nur im Arbeitsspeicher.
+- Automatisierte API-Tests und Windows-Build mit Test des sichtbaren Programmstarts.
 
-[![RustDesk Server Pro](https://img.shields.io/badge/RustDesk%20Server%20Pro-Advanced%20Features-blue)](https://rustdesk.com/pricing.html)
+## Deutliche Grenzen dieser Version
 
-Yet another remote desktop solution, written in Rust. Works out of the box with no configuration required. You have full control of your data, with no concerns about security. You can use our rendezvous/relay server, [set up your own](https://rustdesk.com/server), or [write your own rendezvous/relay server](https://github.com/rustdesk/rustdesk-server-demo).
+Dies ist ein Testprototyp für eigene Geräte und keine Kundenfreigabe. Noch keine
+Ende-zu-Ende-Verschlüsselung: Der Server verarbeitet Bildschirmbilder und Eingaben
+im Klartext innerhalb seines Prozesses. HTTPS schützt nur die einzelnen Transportwege.
+Für den ersten Test bleibt der Server deshalb an localhost und wird über SSH erreicht.
+Noch keine Mehrfaktor-Anmeldung, mehreren Techniker oder echte Mandantentrennung.
+Kunden sind organisatorische Zuordnungen für einen Betreiber, keine Sicherheitsmandanten.
+Noch keine Code-Signierung, Agentinstallation, UAC-Steuerung, mehreren Monitore,
+Dateiübertragung oder unbeaufsichtigten Zugriffe. Die UI zeigt diese Grenzen sichtbar.
+Geräte werden bei jedem neuen QuickSupport-Start erneut registriert und erhalten eine
+neue ID. Frühere Einträge lassen sich sperren. Keine Zugangsdaten für Fernwartung
+werden im Programm eingebettet. Nach Sitzungsende ist eine neue Zustimmung nötig.
+Die erreichte Übertragungsrate hängt von Verbindung und Bildgröße ab.
 
-![image](https://user-images.githubusercontent.com/71636191/171661982-430285f0-2e12-4b1d-9957-4a58e375304d.png)
+## Lokaler Start ohne Docker
 
-RustDesk welcomes contribution from everyone. See [CONTRIBUTING.md](docs/CONTRIBUTING.md) for help getting started.
+Node.js 24 installieren. Im Projektverzeichnis ein eigenes Technikerpasswort über
+die Umgebungsvariable `ADMIN_PASSWORD` setzen. Mindestens 14 Zeichen verwenden.
+Dann `npm start` ausführen und `http://127.0.0.1:8787` öffnen. Kein npm install nötig.
+Einzelne PowerShell-Sitzung: `$env:ADMIN_PASSWORD = Read-Host 'Testpasswort'`.
+Für echte Zugangsdaten besser ein sicheres Geheimnismanagement verwenden.
+`node --test tests/control.test.mjs` führt die Servertests aus.
 
-[**FAQ**](https://github.com/rustdesk/rustdesk/wiki/FAQ)
+## Auf dem bestehenden Linux-Testserver mit Docker
 
-[**BINARY DOWNLOAD**](https://github.com/rustdesk/rustdesk/releases)
+Das Paket in einen eigenen Ordner kopieren. `deploy/.env.example` nach `deploy/.env`
+kopieren und dort ausschließlich lokal ein neues Technikerpasswort setzen.
+Aus dem Projektordner `docker compose --env-file deploy/.env -f deploy/compose.yml up -d --build`
+starten. Das verwendet Port 8787 nur an localhost und eigene Daten; kein RustDesk-Port.
 
-[**NIGHTLY BUILD**](https://github.com/rustdesk/rustdesk/releases/tag/nightly)
+Auf dem Windows-Techniker-PC einen SSH-Tunnel offen halten:
+`ssh -L 8787:127.0.0.1:8787 <SSH-BENUTZER>@<TESTSERVER>`
+Browser: `http://127.0.0.1:8787`. Für ein zweites eigenes Windows-Testgerät einen
+entsprechenden Tunnel mit einem eigenen autorisierten SSH-Schlüssel öffnen.
+SSH-Schlüssel niemals an Kunden verteilen. Diese Tunnel sind nur für den isolierten Test.
+Keine Firewall-Ports für den Prototyp öffnen. Internetbereitstellung ist nicht Teil dieser Version.
 
-[<img src="https://f-droid.org/badge/get-it-on.png"
-    alt="Get it on F-Droid"
-    height="80">](https://f-droid.org/en/packages/com.carriez.flutter_hbb)
-[<img src="https://flathub.org/api/badge?svg&locale=en"
-    alt="Get it on Flathub"
-    height="80">](https://flathub.org/apps/com.rustdesk.RustDesk)
+## Erster Durchlauf
 
-## Dependencies
+1. Technikerkonsole öffnen und mit dem selbst gesetzten Passwort anmelden.
+2. Testkunden anlegen, auswählen und einen Registrierungscode erzeugen.
+3. Auf dem Testrechner `INCrovax-QuickSupport.exe` starten. Serveradresse auf
+   `http://127.0.0.1:8787` ändern (bei offenem Tunnel), Code eintragen und registrieren.
+4. Das Gerät erscheint in der Konsole. „Support anfragen“ anklicken.
+5. Die Person am Testgerät nimmt die Anfrage ausdrücklich an.
+6. Bildschirm prüfen; für Steuerung die Checkbox aktivieren und das Bild fokussieren.
+7. Am Testgerät „ZUGRIFF BEENDEN“ drücken. Weitere Eingaben müssen abgelehnt werden.
+8. Ablehnen und Abbruch der Verbindung gesondert mit eigenen Geräten testen.
 
-Desktop versions use Flutter or Sciter (deprecated) for GUI. This tutorial is for Sciter only, since it is easier and more friendly to start. Check out our [CI](https://github.com/rustdesk/rustdesk/blob/master/.github/workflows/flutter-build.yml) for building the Flutter version.
+## Windows-Build
 
-Please download Sciter dynamic library yourself.
+.NET 10 SDK: `dotnet publish windows/INCrovax.QuickSupport.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -o artifacts/QuickSupport`.
+GitHub Actions erledigt diesen Build im Branch `incrovax-control` und prüft,
+dass das sichtbare Programmfenster startet. Das ersetzt keinen praktischen
+Ende-zu-Ende-Test mit zwei Windows-Rechnern.
 
-[Windows](https://raw.githubusercontent.com/c-smile/sciter-sdk/master/bin.win/x64/sciter.dll) |
-[Linux](https://raw.githubusercontent.com/c-smile/sciter-sdk/master/bin.lnx/x64/libsciter-gtk.so) |
-[macOS](https://raw.githubusercontent.com/c-smile/sciter-sdk/master/bin.osx/libsciter.dylib)
+## Nächste Entwicklungsstufen
 
-## Raw Steps to build
+Zuerst Windows-Ende-zu-Ende-Tests und Fehlerbehebung. Danach Geräteidentitäten,
+Techniker-MFA, echte Kundentrennung, Ende-zu-Ende-Verschlüsselung mit geprüfter
+Gegenstelle und geeigneter Echtzeitübertragung. Anschließend erst installierter
+Agent, explizite Richtlinien für unbeaufsichtigten Zugriff und Monitoring.
 
-- Prepare your Rust development env and C++ build env
-
-- Install [vcpkg](https://github.com/microsoft/vcpkg), and set `VCPKG_ROOT` env variable correctly
-
-  - Windows: vcpkg install libvpx:x64-windows-static libyuv:x64-windows-static opus:x64-windows-static aom:x64-windows-static
-  - Linux/macOS: vcpkg install libvpx libyuv opus aom
-
-- run `cargo run`
-
-## [Build](https://rustdesk.com/docs/en/dev/build/)
-
-## How to Build on Linux
-
-### Ubuntu 18 (Debian 10)
-
-```sh
-sudo apt install -y zip g++ gcc git curl wget nasm yasm libgtk-3-dev clang libxcb-randr0-dev libxdo-dev \
-        libxfixes-dev libxcb-shape0-dev libxcb-xfixes0-dev libasound2-dev libpulse-dev cmake make \
-        libclang-dev ninja-build libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev
-```
-
-### openSUSE Tumbleweed
-
-```sh
-sudo zypper install gcc-c++ git curl wget nasm yasm gcc gtk3-devel clang libxcb-devel libXfixes-devel cmake alsa-lib-devel gstreamer-devel gstreamer-plugins-base-devel xdotool-devel
-```
-
-### Fedora 28 (CentOS 8)
-
-```sh
-sudo yum -y install gcc-c++ git curl wget nasm yasm gcc gtk3-devel clang libxcb-devel libxdo-devel libXfixes-devel pulseaudio-libs-devel cmake alsa-lib-devel gstreamer1-devel gstreamer1-plugins-base-devel
-```
-
-### Arch (Manjaro)
-
-```sh
-sudo pacman -Syu --needed unzip git cmake gcc curl wget yasm nasm zip make pkg-config clang gtk3 xdotool libxcb libxfixes alsa-lib pipewire
-```
-
-### Install vcpkg
-
-```sh
-git clone https://github.com/microsoft/vcpkg
-cd vcpkg
-git checkout 2023.04.15
-cd ..
-vcpkg/bootstrap-vcpkg.sh
-export VCPKG_ROOT=$HOME/vcpkg
-vcpkg/vcpkg install libvpx libyuv opus aom
-```
-
-### Fix libvpx (For Fedora)
-
-```sh
-cd vcpkg/buildtrees/libvpx/src
-cd *
-./configure
-sed -i 's/CFLAGS+=-I/CFLAGS+=-fPIC -I/g' Makefile
-sed -i 's/CXXFLAGS+=-I/CXXFLAGS+=-fPIC -I/g' Makefile
-make
-cp libvpx.a $HOME/vcpkg/installed/x64-linux/lib/
-cd
-```
-
-### Build
-
-```sh
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-source $HOME/.cargo/env
-git clone --recurse-submodules https://github.com/rustdesk/rustdesk
-cd rustdesk
-mkdir -p target/debug
-wget https://raw.githubusercontent.com/c-smile/sciter-sdk/master/bin.lnx/x64/libsciter-gtk.so
-mv libsciter-gtk.so target/debug
-VCPKG_ROOT=$HOME/vcpkg cargo run
-```
-
-## How to build with Docker
-
-Begin by cloning the repository and building the Docker container:
-
-```sh
-git clone https://github.com/rustdesk/rustdesk
-cd rustdesk
-git submodule update --init --recursive
-docker build -t "rustdesk-builder" .
-```
-
-Then, each time you need to build the application, run the following command:
-
-```sh
-docker run --rm -it -v $PWD:/home/user/rustdesk -v rustdesk-git-cache:/home/user/.cargo/git -v rustdesk-registry-cache:/home/user/.cargo/registry -e PUID="$(id -u)" -e PGID="$(id -g)" rustdesk-builder
-```
-
-Note that the first build may take longer before dependencies are cached, subsequent builds will be faster. Additionally, if you need to specify different arguments to the build command, you may do so at the end of the command in the `<OPTIONAL-ARGS>` position. For instance, if you wanted to build an optimized release version, you would run the command above followed by `--release`. The resulting executable will be available in the target folder on your system, and can be run with:
-
-```sh
-target/debug/rustdesk
-```
-
-Or, if you're running a release executable:
-
-```sh
-target/release/rustdesk
-```
-
-Please ensure that you run these commands from the root of the RustDesk repository, or the application may not find the required resources. Also note that other cargo subcommands such as `install` or `run` are not currently supported via this method as they would install or run the program inside the container instead of the host.
-
-## File Structure
-
-- **[libs/hbb_common](https://github.com/rustdesk/rustdesk/tree/master/libs/hbb_common)**: video codec, config, tcp/udp wrapper, and some other utility functions shared with the server
-- **[libs/base](https://github.com/rustdesk/rustdesk/tree/master/libs/base)**: protobuf, fs functions for file transfer, keyboard and platform code used only by this app
-- **[libs/scrap](https://github.com/rustdesk/rustdesk/tree/master/libs/scrap)**: screen capture
-- **[libs/enigo](https://github.com/rustdesk/rustdesk/tree/master/libs/enigo)**: platform specific keyboard/mouse control
-- **[libs/clipboard](https://github.com/rustdesk/rustdesk/tree/master/libs/clipboard)**: file copy and paste implementation for Windows, Linux, macOS.
-- **[src/ui](https://github.com/rustdesk/rustdesk/tree/master/src/ui)**: obsolete Sciter UI (deprecated)
-- **[src/server](https://github.com/rustdesk/rustdesk/tree/master/src/server)**: audio/clipboard/input/video services, and network connections
-- **[src/client.rs](https://github.com/rustdesk/rustdesk/tree/master/src/client.rs)**: start a peer connection
-- **[src/rendezvous_mediator.rs](https://github.com/rustdesk/rustdesk/tree/master/src/rendezvous_mediator.rs)**: Communicate with [rustdesk-server](https://github.com/rustdesk/rustdesk-server), wait for remote direct (TCP hole punching) or relayed connection
-- **[src/platform](https://github.com/rustdesk/rustdesk/tree/master/src/platform)**: platform specific code
-- **[flutter](https://github.com/rustdesk/rustdesk/tree/master/flutter)**: Flutter code for desktop and mobile
-
-## Screenshots
-
-![Connection Manager](https://github.com/rustdesk/rustdesk/assets/28412477/db82d4e7-c4bc-4823-8e6f-6af7eadf7651)
-
-![Connected to a Windows PC](https://github.com/rustdesk/rustdesk/assets/28412477/9baa91e9-3362-4d06-aa1a-7518edcbd7ea)
-
-![File Transfer](https://github.com/rustdesk/rustdesk/assets/28412477/39511ad3-aa9a-4f8c-8947-1cce286a46ad)
-
-![TCP Tunneling](https://github.com/rustdesk/rustdesk/assets/28412477/78e8708f-e87e-4570-8373-1360033ea6c5)
-
+Datenmodell und Server sind bewusst auf eine kleine, einzelne Testinstanz begrenzt.
+Bestandsdaten werden atomar in JSON gespeichert; ein Datenbank- und Backupkonzept
+ist vor produktiver Nutzung erforderlich. Sitzungen und Anmeldungen verfallen bei Neustart.
