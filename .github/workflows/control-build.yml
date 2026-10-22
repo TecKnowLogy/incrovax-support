@@ -14,8 +14,19 @@ jobs:
         with:
           node-version: '24'
       - run: node --test tests/control.test.mjs
-  windows:
+  browser-test:
     needs: server-tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - run: npm install --no-save playwright
+      - run: npx playwright install --with-deps chromium
+      - run: node tests/browser.cjs
+  windows:
+    needs: [server-tests, browser-test]
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
