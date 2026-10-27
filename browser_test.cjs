@@ -38,6 +38,15 @@ const {chromium}=require('playwright');const fs=require('fs');const path=require
   });for(const row of checks)if(row.ratio<4.5)throw Error(name+' contrast '+JSON.stringify(row));
   await page.screenshot({path:'out/browser/'+name+'.png',fullPage:true});results.push({name,checks});
  }
- await page.setViewportSize({width:390,height:844});await page.screenshot({path:'out/browser/mobile.png',fullPage:true});
+ await page.goto('https://mesh.incrovax.de/',{waitUntil:'networkidle',timeout:45000});
+ await page.addStyleTag({content:css});
+ await page.addScriptTag({content:js});
+ if(await page.locator('input[type=password]').count()===0)throw Error('Public page is not the login page');
+ await page.screenshot({path:'out/browser/live-login-CI-overlay.png',fullPage:true});
+ await page.setViewportSize({width:390,height:844});
+ await page.screenshot({path:'out/browser/live-login-mobile-CI-overlay.png',fullPage:true});
+ const overflow=await page.evaluate(()=>document.documentElement.scrollWidth>window.innerWidth+2);
+ if(overflow)throw Error('Public mobile login has horizontal overflow');
+ results.push({name:'Actual public login with proposed CSS/JS overlay',mobileWidth:390,horizontalOverflow:overflow});
  fs.writeFileSync('out/browser/RESULTS.json',JSON.stringify({type:'Representative DOM fixtures; not an authenticated live server audit',cases:results},null,2));await browser.close();console.log('9 representative browser fixtures passed, contrast and data preservation checks passed.');
 })().catch(e=>{console.error(e);process.exit(1)});
