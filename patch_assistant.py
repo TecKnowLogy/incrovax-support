@@ -74,6 +74,12 @@ namespace MeshAssistant {
     button.UseVisualStyleBackColor=false;button.FlatStyle=FlatStyle.Flat;
     button.FlatAppearance.BorderColor=Green;button.FlatAppearance.MouseOverBackColor=Color.FromArgb(41,51,34);
     button.BackColor=Color.FromArgb(37,46,56);button.ForeColor=Text;
+    button.Paint+=(sender,args)=>{
+     if(button.Enabled)return;
+     args.Graphics.Clear(Color.FromArgb(37,46,56));
+     using(var pen=new Pen(Color.FromArgb(89,102,117)))args.Graphics.DrawRectangle(pen,0,0,button.Width-1,button.Height-1);
+     TextRenderer.DrawText(args.Graphics,button.Text,button.Font,button.ClientRectangle,Color.FromArgb(180,191,203),TextFormatFlags.HorizontalCenter|TextFormatFlags.VerticalCenter);
+    };
    }
    var menu=control as ToolStrip;
    if(menu!=null) {menu.BackColor=Panel;menu.ForeColor=Text;menu.Renderer=new ToolStripProfessionalRenderer(new Palette());foreach(ToolStripItem item in menu.Items){item.Text=Brand(item.Text);item.ForeColor=Text;}}

@@ -40,6 +40,18 @@ jobs:
           if ($p.HasExited) { throw "Assistant exited: $($p.ExitCode)" }
           if ($p.MainWindowTitle -notlike '*INCrovax*') { throw "Window title mismatch: $($p.MainWindowTitle)" }
           Write-Output "Native GUI started: $($p.MainWindowTitle)"
+          New-Item -ItemType Directory -Force out | Out-Null
+          Add-Type -AssemblyName System.Drawing
+          Add-Type -TypeDefinition 'using System;using System.Runtime.InteropServices; public class Capture { [DllImport("user32.dll")] public static extern bool PrintWindow(IntPtr h,IntPtr dc,uint f);[DllImport("user32.dll")]public static extern bool GetWindowRect(IntPtr h,out RECT r);[StructLayout(LayoutKind.Sequential)]public struct RECT{public int Left,Top,Right,Bottom;} }'
+          $rect=New-Object Capture+RECT
+          [Capture]::GetWindowRect($p.MainWindowHandle,[ref]$rect) | Out-Null
+          $bitmap=New-Object Drawing.Bitmap ($rect.Right-$rect.Left),($rect.Bottom-$rect.Top)
+          $graphics=[Drawing.Graphics]::FromImage($bitmap)
+          $dc=$graphics.GetHdc()
+          [Capture]::PrintWindow($p.MainWindowHandle,$dc,0) | Out-Null
+          $graphics.ReleaseHdc($dc)
+          $bitmap.Save((Join-Path (Resolve-Path out) 'Assistant-GUI.png'))
+          $graphics.Dispose();$bitmap.Dispose()
           Stop-Process -Id $p.Id
           New-Item -ItemType Directory -Force out | Out-Null
           Copy-Item $exe out/
@@ -50,3 +62,20 @@ jobs:
         with:
           name: INCrovax-Support-Assistant-4.0-Windows
           path: out/
+
+  browser-ci:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: branding
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm install --no-save playwright
+      - run: node branding/browser_test.cjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: INCrovax-CI-4.0-Browserpruefung
+          path: out/browser/

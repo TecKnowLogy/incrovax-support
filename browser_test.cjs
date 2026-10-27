@@ -16,7 +16,7 @@ const {chromium}=require('playwright');const fs=require('fs');const path=require
  };
  for(const [name,markup] of Object.entries(cases)){
   await page.setContent('<!doctype html><html><head><style>'+css+'\nbody{padding:24px}#dialog{width:440px;margin:60px auto}#dialogHeader,#dialogBody{padding:12px}#page_leftbar{position:fixed;left:0;top:0;width:72px}</style></head><body class="'+(name==='login'?'login':'night')+'">'+markup+'</body></html>');
-  await page.addScriptTag({content:js});await page.waitForTimeout(150);
+  await page.evaluate(()=>{delete window.__incrovaxIdentity});await page.addScriptTag({content:js});await page.waitForTimeout(150);
   if(name==='agent'){
    if((await page.locator('body').innerText()).match(/meshcentral|mesh[- ]?agent/i))throw Error('Agent text remains');
    if(await page.locator('#incrovax-assistant-download').getAttribute('href')!=='downloads/INCrovax-Support-Assistant.exe')throw Error('Download path');
