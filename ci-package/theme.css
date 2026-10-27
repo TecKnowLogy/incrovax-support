@@ -78,3 +78,19 @@ body input[type=checkbox],body input[type=radio] {accent-color:#6bed00;}
 #incrovax-assistant-download {color:#a4e57d;text-decoration:underline;cursor:pointer;}
 @media(max-width:600px) {#dialog {width:calc(100vw - 24px)!important;max-width:calc(100vw - 24px);left:12px!important;margin-left:0!important;box-sizing:border-box;}#dialogBody{overflow:auto;max-height:70vh;}#loginPicture{max-width:calc(100vw - 32px);height:auto;}}
 /* INCROVAX DETAIL END */
+/* INCROVAX AUXILIARY START */
+body {color:#e4e9ef!important;}
+#xtop,#xtop>div,#xbottom,#LeftSideToolBar {background:#101214!important;color:#e4e9ef!important;border-color:#414b58!important;}
+#xmiddle {background:#101214;color:#e4e9ef;}
+.localBubble {background:#26391e!important;color:#e4e9ef!important;border-color:#526044!important;}
+.remoteBubble {background:#222a34!important;color:#e4e9ef!important;border-color:#414b58!important;}
+#xouttext {background:#10161d!important;color:#eff3f7!important;border-color:#596675!important;}
+.tagSpan,#d3serveraction,#d2serveraction {background:#27313c!important;color:#e4e9ef!important;}
+#MxMESH,.textOverGray {color:#e4e9ef!important;}
+.deviceNotifyDotSub,.deviceNotifySmallDotSub,.deviceNotifyLargeDotSub {background:#6bed00!important;color:#101214!important;}
+.deviceNotifyDotSub:hover,.deviceNotifySmallDotSub:hover,.deviceNotifyLargeDotSub:hover {background:#95f34d!important;}
+#passwordPolicyCallout,#rpasswordPolicyCallout {background:#222a34!important;color:#e4e9ef!important;border:1px solid #596675;}
+body:has(#logincell) {background:#101214!important;color:#e4e9ef!important;}
+body:has(#logincell) #backgroundImage {background-image:none!important;}
+body:has(#logincell) input:not([type=checkbox]):not([type=radio]):not([type=submit]):not([type=button]),body:has(#logincell) select {background:#10161d!important;color:#eff3f7!important;border:1px solid #596675;}
+/* INCROVAX AUXILIARY END */

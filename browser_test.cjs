@@ -4,6 +4,9 @@ const {chromium}=require('playwright');const fs=require('fs');const path=require
  const root=path.resolve('branding/ci-package');const css=fs.readFileSync(root+'/theme.css','utf8')+'\n'+fs.readFileSync(root+'/navigation.css','utf8');const js=fs.readFileSync(root+'/branding.js','utf8');
  fs.mkdirSync('out/browser',{recursive:true});const results=[];
  const cases={
+ messenger:'<div id="xtop" style="background-color:#036"><div style="background-color:#036">INCrovax Support Chat</div></div><div id="xmiddle"><div class="remoteBubble">Guten Tag</div><div class="localBubble">Wie können wir helfen?</div></div><div id="xbottom"><input id="xouttext" placeholder="Nachricht"><button>Senden</button></div>',
+ mobile:'<div id="masthead">INCrovax Fernwartung</div><div id="MxMESH"><h2>Meine Geräte</h2><span class="tagSpan">Kunde</span><div class="deviceNotifyDotSub">?</div><p class="textOverGray">Agent eingeschaltet</p></div>',
+
  login:'<div id="backgroundImage" style="background-image:url(welcome.png)"></div><div id="logincell"><div id="loginpanel" style="padding:24px;width:280px;margin:100px auto"><h2>INCrovax Fernwartung</h2><input type="text" placeholder="Benutzername"><br><input type="password" placeholder="Passwort"><p><input type="submit" value="Anmelden"></p><a href="#">Sicherheitscode verwenden</a></div></div>',
  devices:'<h1>Meine Geräte</h1><div id="devListToolbarSpan">Filter <input placeholder="Gerät suchen"><select><option>Alle Geräte</option></select></div><h3>Testkunde</h3><div class="style3x" style="padding:15px;width:300px"><div class="i1"></div>ARBEITSPLATZ-01<br>Agent, eingeschaltet</div><h3>Server</h3><div class="style3x" style="padding:15px;width:300px">SERVER-01<br>Agent, eingeschaltet</div>',
  account:'<h1>Mein Konto</h1><h3>Konto-Sicherheit</h3><a>Authentifikator-App verwalten</a><br><a>Sicherheitscodes verwalten</a><h3>Konto-Aktionen</h3><a>Benachrichtigungseinstellungen</a><h3>Gerätegruppen</h3><div class="style3x" style="padding:15px;width:300px"><div class="mi" style="width:50px;height:50px;display:inline-block"></div>Testkunde – Gesamtadministrator</div>',
@@ -31,7 +34,7 @@ const {chromium}=require('playwright');const fs=require('fs');const path=require
   const checks=await page.evaluate(()=>{
    function rgb(s){return (s.match(/[\d.]+/g)||[]).slice(0,3).map(Number)}
    function lum(c){return c.map(v=>{v/=255;return v<=.04045?v/12.92:((v+.055)/1.055)**2.4}).reduce((a,v,i)=>a+v*[.2126,.7152,.0722][i],0)}
-   let rows=[];for(const e of document.querySelectorAll('input:not([type=checkbox]),select,textarea,#dialogHeader,#dialogBody,#notifiyBox .notification')){
+   let rows=[];for(const e of document.querySelectorAll('input:not([type=checkbox]),select,textarea,#dialogHeader,#dialogBody,#notifiyBox .notification,#xtop,#xbottom,.remoteBubble,.localBubble,.tagSpan,.deviceNotifyDotSub')){
     let st=getComputedStyle(e),fg=rgb(st.color),bg=rgb(st.backgroundColor);if(st.backgroundColor==='rgba(0, 0, 0, 0)')continue;
     const f=lum(fg),b=lum(bg),ratio=(Math.max(f,b)+.05)/(Math.min(f,b)+.05);rows.push({element:e.id||e.tagName,ratio:+ratio.toFixed(2)});
    }return rows;
@@ -48,5 +51,5 @@ const {chromium}=require('playwright');const fs=require('fs');const path=require
  const overflow=await page.evaluate(()=>document.documentElement.scrollWidth>window.innerWidth+2);
  if(overflow)throw Error('Public mobile login has horizontal overflow');
  results.push({name:'Actual public login with proposed CSS/JS overlay',mobileWidth:390,horizontalOverflow:overflow});
- fs.writeFileSync('out/browser/RESULTS.json',JSON.stringify({type:'Representative DOM fixtures; not an authenticated live server audit',cases:results},null,2));await browser.close();console.log('9 representative browser fixtures passed, contrast and data preservation checks passed.');
+ fs.writeFileSync('out/browser/RESULTS.json',JSON.stringify({type:'Representative DOM fixtures; not an authenticated live server audit',cases:results},null,2));await browser.close();console.log('11 representative browser fixtures passed, contrast and data preservation checks passed.');
 })().catch(e=>{console.error(e);process.exit(1)});
