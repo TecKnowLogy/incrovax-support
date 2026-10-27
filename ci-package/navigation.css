@@ -1,0 +1,50 @@
+/* INCROVAX NAV START */
+#page_leftbar .lbbutton {
+  background: #181d23 !important;
+  border-radius: 10px !important;
+  box-shadow: inset 0 0 0 1px #333c46;
+  opacity: 1 !important;
+  color: #bfc8d3;
+  transition: background-color .14s, color .14s, box-shadow .14s;
+}
+#page_leftbar .lbbutton:hover {
+  background: #242e35 !important;
+  color: #eff4f8;
+  box-shadow: inset 0 0 0 1px #667584;
+}
+#page_leftbar .lbbutton.lbbuttonsel,
+#page_leftbar .lbbutton.lbbuttonsel2 {
+  background: #1d2a18 !important;
+  color: #6bed00;
+  box-shadow: inset 3px 0 0 #6bed00, inset 0 0 0 1px #426d28;
+}
+#page_leftbar .lbbutton:focus-visible {
+  outline: 2px solid #6bed00 !important;
+  outline-offset: 2px;
+}
+#page_leftbar .lbbutton > .lbtg {
+  background: none !important;
+  pointer-events: none;
+}
+#page_leftbar .lbbutton::after {
+  content: "";
+  position: absolute;
+  top: 19px;
+  left: 19px;
+  width: 36px;
+  height: 36px;
+  background-color: currentColor;
+  -webkit-mask: var(--incrovax-icon) center / contain no-repeat;
+  mask: var(--incrovax-icon) center / contain no-repeat;
+  pointer-events: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  #page_leftbar .lbbutton { transition: none; }
+}
+#LeftMenuMyDevices { --incrovax-icon: url("../images/incrovax-nav/devices.svg"); }
+#LeftMenuMyAccount { --incrovax-icon: url("../images/incrovax-nav/account.svg"); }
+#LeftMenuMyEvents { --incrovax-icon: url("../images/incrovax-nav/events.svg"); }
+#LeftMenuMyFiles { --incrovax-icon: url("../images/incrovax-nav/files.svg"); }
+#LeftMenuMyUsers { --incrovax-icon: url("../images/incrovax-nav/users.svg"); }
+#LeftMenuMyServer { --incrovax-icon: url("../images/incrovax-nav/server.svg"); }
+/* INCROVAX NAV END */

@@ -1,0 +1,81 @@
+name: INCrovax Assistant CI 4.0
+on:
+  push:
+    branches: [incrovax-ci-4]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  windows-assistant:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: branding
+      - uses: actions/checkout@v4
+        with:
+          repository: Ylianst/MeshCentralAssistant
+          ref: 5810e60cd76e845f21d865db1205f4b5209b76a8
+          path: upstream
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: microsoft/setup-msbuild@v2
+      - run: python branding/patch_assistant.py upstream
+      - name: Build Windows application
+        shell: pwsh
+        run: |
+          msbuild upstream/MeshCentralAssistant.csproj /p:Configuration=Release /p:Platform=AnyCPU /p:GenerateResourceMSBuildArchitecture=CurrentArchitecture /v:minimal
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - name: Verify executable and GUI startup
+        shell: pwsh
+        run: |
+          $exe = (Resolve-Path upstream/bin/Release/INCrovax-Support-Assistant.exe).Path
+          $info = [Diagnostics.FileVersionInfo]::GetVersionInfo($exe)
+          if ($info.ProductName -ne 'INCrovax Fernwartung') { throw 'Product branding mismatch' }
+          if ($info.FileDescription -ne 'INCrovax Support Assistant') { throw 'Description mismatch' }
+          $p = Start-Process $exe -ArgumentList '-visible' -PassThru
+          Start-Sleep -Seconds 8
+          $p.Refresh()
+          if ($p.HasExited) { throw "Assistant exited: $($p.ExitCode)" }
+          if ($p.MainWindowTitle -notlike '*INCrovax*') { throw "Window title mismatch: $($p.MainWindowTitle)" }
+          Write-Output "Native GUI started: $($p.MainWindowTitle)"
+          New-Item -ItemType Directory -Force out | Out-Null
+          Add-Type -AssemblyName System.Drawing
+          Add-Type -TypeDefinition 'using System;using System.Runtime.InteropServices; public class Capture { [DllImport("user32.dll")] public static extern bool PrintWindow(IntPtr h,IntPtr dc,uint f);[DllImport("user32.dll")]public static extern bool GetWindowRect(IntPtr h,out RECT r);[StructLayout(LayoutKind.Sequential)]public struct RECT{public int Left,Top,Right,Bottom;} }'
+          $rect=New-Object Capture+RECT
+          [Capture]::GetWindowRect($p.MainWindowHandle,[ref]$rect) | Out-Null
+          $bitmap=New-Object Drawing.Bitmap ($rect.Right-$rect.Left),($rect.Bottom-$rect.Top)
+          $graphics=[Drawing.Graphics]::FromImage($bitmap)
+          $dc=$graphics.GetHdc()
+          [Capture]::PrintWindow($p.MainWindowHandle,$dc,0) | Out-Null
+          $graphics.ReleaseHdc($dc)
+          $bitmap.Save((Join-Path (Resolve-Path out) 'Assistant-GUI.png'))
+          $graphics.Dispose();$bitmap.Dispose()
+          Stop-Process -Id $p.Id
+          New-Item -ItemType Directory -Force out | Out-Null
+          Copy-Item $exe out/
+          Copy-Item upstream/LICENSE out/LICENSE-MeshCentralAssistant.txt
+          Get-FileHash $exe -Algorithm SHA256 | Format-List | Out-File out/BUILD.txt
+          'Upstream: 5810e60cd76e845f21d865db1205f4b5209b76a8. Custom INCrovax build. .NET Framework 4.7.2. Monitor-only fallback. No public code-signing certificate. GUI startup checked; live service/help request still requires test.' | Add-Content out/BUILD.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: INCrovax-Support-Assistant-4.0-Windows
+          path: out/
+
+  browser-ci:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: branding
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm install --no-save playwright
+      - run: node branding/browser_test.cjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: INCrovax-CI-4.0-Browserpruefung
+          path: out/browser/

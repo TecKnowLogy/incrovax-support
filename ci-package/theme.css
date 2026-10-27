@@ -1,0 +1,80 @@
+/* INCROVAX FULL START */
+:root { --iv-bg:#101214; --iv-panel:#1a1e24; --iv-line:#414b58; --iv-text:#e4e9ef; --iv-muted:#b4bfcb; --iv-green:#6bed00; }
+body { font-family:"Segoe UI",Arial,sans-serif; background-color:var(--iv-bg) !important; }
+body.night { color:var(--iv-text); color-scheme:dark; }
+body.night #container, body.night #column_l { background-color:var(--iv-bg) !important; color:var(--iv-text) !important; }
+#masthead { background-color:#101214 !important; color:var(--iv-text) !important; border-bottom:2px solid var(--iv-green); }
+#page_leftbar { background:#14181d !important; border-right:1px solid #333d48; }
+#topbar, .topbar_td, .topbar_td_end { background-color:#20262e !important; color:var(--iv-text) !important; }
+#footer { background-color:#101214 !important; color:var(--iv-muted) !important; border-top:1px solid #333d48; }
+#footer a, #masthead a { color:#d4eabf; }
+#loginpanel, #createpanel, #resetpanel, #tokenpanel, #resettokenpanel, #resetpasswordpanel, #checkemailpanel, #waitpushpanel {
+  background-color:var(--iv-panel) !important; color:var(--iv-text) !important;
+  border:1px solid var(--iv-line); border-top:3px solid var(--iv-green);
+  border-radius:10px; box-shadow:0 14px 40px #0006;
+}
+body.night #logincell a { color:#a4e57d !important; }
+#dialog { background-color:var(--iv-panel) !important; color:var(--iv-text) !important; border:1px solid #4c5867; border-radius:8px; box-shadow:0 16px 50px #0007; }
+#dialogHeader { background-color:#263320 !important; color:#edf6e9 !important; border-bottom:1px solid #5b8a38; border-radius:7px 7px 0 0; }
+#dialogBody { color:var(--iv-text); }
+body.night input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="color"]):not([type="button"]):not([type="submit"]):not([type="reset"]):not([type="image"]),
+body.night textarea, body.night select, #dialog input[type="text"], #dialog input[type="password"], #dialog textarea, #dialog select {
+  background-color:#10161d; color:#eff3f7; border:1px solid #596675; border-radius:4px;
+}
+body.night input[type="checkbox"], body.night input[type="radio"] { accent-color:var(--iv-green); }
+button, input[type="button"], input[type="submit"], input[type="reset"] {
+  background-color:#27313c; color:#eff3f7; border:1px solid #617080; border-radius:4px;
+}
+button:hover:not(:disabled), input[type="button"]:hover:not(:disabled), input[type="submit"]:hover:not(:disabled), input[type="reset"]:hover:not(:disabled) { border-color:var(--iv-green); }
+button:disabled, input[type="button"]:disabled, input[type="submit"]:disabled, input[type="reset"]:disabled { opacity:.5; cursor:default; }
+button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible, a:focus-visible, [tabindex]:focus-visible { outline:2px solid var(--iv-green) !important; outline-offset:2px; }
+body.night a { color:#a4e57d; }
+body.night a:hover { color:#d4f5c3; }
+.style3x, .style3, .style5 { background-color:#242c35 !important; color:#e4e9ef !important; }
+.style3x:hover { background-color:#34404d !important; }
+.style3x.fullselect, .style3sel { background-color:#26391e !important; color:#b6f58e !important; box-shadow:inset 0 -2px 0 #6bed00; }
+.style3x.semiselect { background-color:#303c30 !important; }
+body.night .style6, body.night .style10, body.night .style10s, body.night .style14, body.night .auto-style1 { background-color:#20262e !important; color:#e4e9ef; }
+body.night .g1t, body.night .g2t, body.night .h1, body.night .h2, body.night .e2t, body.night .areaHead, body.night .areaHead2 { background-color:#252e38 !important; color:#e4e9ef !important; }
+body.night .g1, body.night .g2, body.night .e2 { background-color:#191f26 !important; color:#d6dee7 !important; }
+body.night .g1s, body.night .g2s, body.night .e2s { background-color:#25351f !important; color:#e4e9ef !important; }
+body.night #devListToolbarSpan, body.night #p5filehead, body.night #p5filesubhead { background-color:#202730 !important; color:#e4e9ef; }
+body.night .notifiyBox { background-color:#222a34 !important; color:#e4e9ef !important; border-color:#617080; }
+@media (max-width:600px) { #dialog { max-width:calc(100vw - 20px); } }
+@media (prefers-reduced-motion:reduce) { #page_leftbar .lbbutton { transition:none; } }
+/* INCROVAX FULL END */
+/* INCROVAX LOGIN START */
+body.login { background:#101214!important;color:#e4e9ef!important;color-scheme:dark; }
+body.login #backgroundImage { background-image:none!important; }
+body.login #centralTable { background:transparent!important; }
+body.login #loginPicture { max-width:calc(100vw - 40px);height:auto;margin-bottom:12px; }
+body.login input:not([type=checkbox]):not([type=radio]):not([type=button]):not([type=submit]),
+body.login select,body.login textarea,#dialog input:not([type=checkbox]):not([type=radio]):not([type=button]):not([type=submit]),#dialog select,#dialog textarea {
+ background:#10161d!important;color:#eff3f7!important;border:1px solid #596675!important;border-radius:5px;
+}
+body.login input::placeholder,#dialog input::placeholder,#dialog textarea::placeholder { color:#b4bfcb!important;opacity:1; }
+body.login input:-webkit-autofill { -webkit-text-fill-color:#eff3f7!important;box-shadow:0 0 0 1000px #10161d inset!important; }
+body.login a { color:#a4e57d!important; }
+body.login input[type=submit] { background:#6bed00!important;color:#101214!important;border-color:#6bed00!important; }
+/* INCROVAX LOGIN END */
+/* INCROVAX NOTIFY START */
+#notifiyBox {background:#1a1e24!important;color:#e4e9ef!important;border-color:#526044!important;box-shadow:0 8px 30px #0008;}
+#notifiyBox:before {border-color:transparent transparent #526044!important;}
+#notifiyBox:after {border-color:transparent transparent #1a1e24!important;}
+#notifiyBox .notification {background:#222a34!important;color:#e4e9ef!important;border-color:#414b58!important;}
+#notifiyBox .notification:hover {background:#2c3926!important;}
+#notifiyBox .notification>div:last-child {color:#c8d2df!important;}
+#dialogBody div[style*="background-color:#CCC" i],#dialogBody div[style*="background-color: rgb(204, 204, 204)" i] {background:#222a34!important;color:#e4e9ef!important;border:1px solid #414b58;}
+#dialogBody a {color:#a4e57d!important;}
+/* INCROVAX NOTIFY END */
+/* INCROVAX DETAIL START */
+body {color:#e4e9ef;color-scheme:dark;}
+body a {color:#a4e57d;}
+body input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=color]):not([type=button]):not([type=submit]):not([type=reset]):not([type=image]),body select,body textarea {background-color:#10161d;color:#eff3f7;border-color:#596675;}
+body input[type=checkbox],body input[type=radio] {accent-color:#6bed00;}
+#dialogBody {overflow:auto;max-height:75vh;}
+.mi {background-image:url('../images/meshicon50.png')!important;background-image:image-set(url('../images/meshicon50.png') 1x,url('../images/meshicon100.png') 2x)!important;}
+#agins_assistant2 #asinslnk2,#agins_assistant2 #asinslnk2+img {display:none!important;}
+#incrovax-assistant-download {color:#a4e57d;text-decoration:underline;cursor:pointer;}
+@media(max-width:600px) {#dialog {width:calc(100vw - 24px)!important;max-width:calc(100vw - 24px);left:12px!important;margin-left:0!important;box-sizing:border-box;}#dialogBody{overflow:auto;max-height:70vh;}#loginPicture{max-width:calc(100vw - 32px);height:auto;}}
+/* INCROVAX DETAIL END */

@@ -57,6 +57,12 @@ namespace MeshAssistant {
   }
   internal static void Apply(Form form) {
    Walk(form);
+   foreach(var field in form.GetType().GetFields(System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic|System.Reflection.BindingFlags.Public)) {
+    var menu=field.GetValue(form) as ContextMenuStrip;
+    if(menu!=null) Walk(menu);
+    var notify=field.GetValue(form) as NotifyIcon;
+    if(notify!=null) {notify.Icon=Icon.ExtractAssociatedIcon(Application.ExecutablePath);notify.Text="INCrovax Support Assistant";}
+   }
    form.BackColor=Background;form.ForeColor=Text;
    form.Icon=Icon.ExtractAssociatedIcon(Application.ExecutablePath);
   }
