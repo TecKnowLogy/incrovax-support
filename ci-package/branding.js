@@ -66,7 +66,8 @@
     link.download='INCrovax-Support-Assistant.exe';
     link.textContent='INCrovax Support Assistant für Windows (.exe)';
     link.title='Symbol neben der Uhr; verwendet den bereits installierten INCrovax Support Agent';
-    old.after(link);
+    const legal=document.createElement('a');legal.href='downloads/LICENSE-Assistant.txt';legal.textContent='Open-Source-Hinweise';legal.target='_blank';legal.rel='noopener';legal.setAttribute('data-incrovax-preserve','');
+    old.after(link,document.createElement('br'),legal);
   }
   function start() {
     paint(document.body);

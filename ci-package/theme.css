@@ -94,3 +94,8 @@ body:has(#logincell) {background:#101214!important;color:#e4e9ef!important;}
 body:has(#logincell) #backgroundImage {background-image:none!important;}
 body:has(#logincell) input:not([type=checkbox]):not([type=radio]):not([type=submit]):not([type=button]),body:has(#logincell) select {background:#10161d!important;color:#eff3f7!important;border:1px solid #596675;}
 /* INCROVAX AUXILIARY END */
+/* INCROVAX VALIDATION START */
+.msg.error,.msg.error b,.msg.error strong {color:#ff9a9a!important;}
+.msg.success,.msg.success b,.msg.success strong {color:#b6f58e!important;}
+input[aria-invalid=true],textarea[aria-invalid=true] {border-color:#ff9a9a!important;}
+/* INCROVAX VALIDATION END */
